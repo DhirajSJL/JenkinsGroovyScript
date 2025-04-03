@@ -23,7 +23,7 @@ pipeline {
                 {
                     sshagent(['RemoteServer'])
                     {
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@23.23.8.104 "sudo systemctl restart nginx"
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@23.23.8.104 "sudo systemctl restart nginx"'
                     }
                 }
             }
