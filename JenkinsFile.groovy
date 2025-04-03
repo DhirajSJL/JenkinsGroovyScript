@@ -4,7 +4,7 @@ pipeline {
             stage ('Checkout')
             {
                 steps {
-                    git branch: 'main', url: 'https://github.com/DhirajSJL/JenkinsGroovyScript.git'
+                    git branch: 'main', url: 'https://github.com/DhirajSJL/JenkinsFrontEndApp.git'
                 }
             }
             stage ('Deploy')
