@@ -1,5 +1,8 @@
 pipeline {
     agent any
+        tools {
+            maven 'Maven_3.9.8_for_java'
+    }
     stages {
             stage ('Checkout')
             {
@@ -7,25 +10,21 @@ pipeline {
                     git branch: 'main', url: 'https://github.com/DhirajSJL/JenkinsBackendApps.git'
                 }
             }
-            stage ('Deploy')
+            stage ('Build')
             {
                 steps{
-                    sshagent(['RemoteServer']) {
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@23.23.8.104 "sudo rm -r /var/www/html/index.*"'
-                        sh 'scp -o StrictHostKeyChecking=no -r * ubuntu@23.23.8.104:/home/ubuntu/index.html'  
-                        sh 'ssh -o StrictHostKeyChecking=no ubuntu@23.23.8.104 "sudo mv /home/ubuntu/index.html /var/www/html/"'     
-                        }
+                    sh 'mvn clean package'
                 }
             }
-            stage ('Restart Nginx server')
-            {
-                steps 
-                {
-                    sshagent(['RemoteServer'])
-                    {
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@23.23.8.104 "sudo systemctl restart nginx"'
-                    }
-                }
-            }
+            // stage ('Restart Nginx server')
+            // {
+            //     steps 
+            //     {
+            //         sshagent(['RemoteServer'])
+            //         {
+            //         sh 'ssh -o StrictHostKeyChecking=no ubuntu@23.23.8.104 "sudo systemctl restart nginx"'
+            //         }
+            //     }
+            // }
     }
 }
