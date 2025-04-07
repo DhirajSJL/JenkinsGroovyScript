@@ -7,7 +7,7 @@ pipeline {
             stage ('Checkout')
             {
                 steps {
-                    git branch: 'main', url: 'https://github.com/DhirajSJL/JenkinsBackendApps.git'
+                    git branch: 'main', url: 'https://github.com/DhirajSJL/Jenkins_Backend.git'
                 }
             }
             stage ('Build')
