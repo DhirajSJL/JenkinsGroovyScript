@@ -16,15 +16,17 @@ pipeline {
                     sh 'mvn clean package'
                 }
             }
-            // stage ('Restart Nginx server')
-            // {
-            //     steps 
-            //     {
-            //         sshagent(['RemoteServer'])
-            //         {
-            //         sh 'ssh -o StrictHostKeyChecking=no ubuntu@23.23.8.104 "sudo systemctl restart nginx"'
-            //         }
-            //     }
-            // }
+            stage ('Deploy')
+            {
+                steps 
+                {
+                    sshagent(['JenkinsBackendRemoteServer'])
+                    {
+                    sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@65.1.106.15:/home/ubuntu/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@65.1.106.15 "sudo mv /home/ubuntu/*.war /opt/tomcat/webapps/Java_app.war"'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@65.1.106.15 "sudo systemctl restart nginx"'
+                    }
+                }
+            }
     }
 }
