@@ -22,9 +22,9 @@ pipeline {
                 {
                     sshagent(['JenkinsBackendRemoteServer'])
                     {
-                    sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@65.1.106.15:/home/ubuntu/'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@65.1.106.15 "sudo mv /home/ubuntu/*.war /opt/tomcat/webapps/Java_app.war"'
-                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@65.1.106.15 "sudo systemctl restart tomcat"'
+                    sh 'scp -o StrictHostKeyChecking=no target/*.war ubuntu@3.109.210.56:/home/ubuntu/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.109.210.56 "sudo mv /home/ubuntu/*.war /opt/tomcat/webapps/Java_app.war"'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@3.109.210.56 "sudo systemctl restart tomcat"'
                     }
                 }
             }
