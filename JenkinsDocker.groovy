@@ -30,8 +30,8 @@ pipeline {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ubuntu@65.0.86.49 '
                             cd /home/ubuntu/Java_code &&
-                            docker-compose down || true &&
-                            docker-compose up -d --build
+                            sudo docker compose down || true &&
+                            sudo docker compose up -d --build
                         '
                     '''
                 }
