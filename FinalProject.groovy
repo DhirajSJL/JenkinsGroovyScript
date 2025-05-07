@@ -30,7 +30,7 @@ pipeline {
                                 cd /home/ubuntu/Java_code &&
                                 sudo docker build -t dl03/finalproject:latest . &&
                                 sudo docker tag dl03/finalproject:latest dl03/finalproject:latest.$BUILD_ID &&
-                                echo "${Password}" | sudo docker login -u DL03 --password-stdin &&
+                                echo "${Password}" | sudo docker login -u dl03 --password-stdin &&
                                 sudo docker push dl03/finalproject:latest &&
                                 sudo docker push dl03/finalproject:latest.$BUILD_ID
                             '
