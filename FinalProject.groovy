@@ -21,22 +21,30 @@ pipeline {
         stage('Deploy') {
             steps {
                 sshagent(['JenkinsDocker']) {
-                    // Transfer files to remote server
                     sh 'scp -o StrictHostKeyChecking=no target/*.jar ubuntu@65.1.135.172:/home/ubuntu/Java_code'
                     sh 'scp -o StrictHostKeyChecking=no Dockerfile ubuntu@65.1.135.172:/home/ubuntu/Java_code'
-                    //sh 'scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@65.0.86.49:/home/ubuntu/Java_code'
+                    
+                    sh '''
+                        ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
+                            cd /home/ubuntu/Java_code &&
+                            sudo docker build -t dl03/$JOB_NAME:v1.$BUILD_ID .
+                        '
+                    '''
+                }
+            }
+        }
 
-                    // Execute docker-compose commands on the remote server
-                     sh '''
-                         ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
-                             cd /home/ubuntu/Java_code &&
-                             sudo docker build -t dl03/ProjectImg:v1 .                           
-                         '
-                     '''
+        stage('Push Image to DockerHub') {
+            steps {
+                withCredentials([string(credentialsId: 'DockerPass', variable: 'Password')]) {
+                    sh 'docker login -u abdallahdoc -p ${Password}'
+                    sh 'docker image push dl03/$JOB_NAME:v1.$BUILD_ID'
+                    sh 'docker image push dl03/$JOB_NAME:latest'
                 }
             }
         }
     }
+}
 
     post {
         success {
