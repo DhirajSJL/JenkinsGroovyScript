@@ -18,34 +18,28 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
-            steps {
-                sshagent(['JenkinsDocker']) {
-                    sh 'scp -o StrictHostKeyChecking=no target/*.jar ubuntu@65.1.135.172:/home/ubuntu/Java_code'
-                    sh 'scp -o StrictHostKeyChecking=no Dockerfile ubuntu@65.1.135.172:/home/ubuntu/Java_code'
-                    
-                    sh '''
-                        ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
-                            cd /home/ubuntu/Java_code &&
-                            sudo docker build -t dl03/Finalproject:latest . &&
-                            sudo docker image tag dl03/Finalproject:latest dl03/Finalproject:latest.$BUILD_ID
-                        '
-                    '''
-                }
-            }
-        }
-
-        stage('Push Image to DockerHub') {
+        stage('Deploy and Push Docker Image') {
             steps {
                 withCredentials([string(credentialsId: 'DockerPass', variable: 'Password')]) {
-                    sh 'docker login -u abdallahdoc -p ${Password}'
-                    sh 'docker image push dl03/Finalproject:latest.$BUILD_ID'
-                    sh 'docker image push dl03/Finalproject:latest'
+                    sshagent(['JenkinsDocker']) {
+                        sh """
+                            scp -o StrictHostKeyChecking=no target/*.jar ubuntu@65.1.135.172:/home/ubuntu/Java_code
+                            scp -o StrictHostKeyChecking=no Dockerfile ubuntu@65.1.135.172:/home/ubuntu/Java_code
+
+                            ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
+                                cd /home/ubuntu/Java_code &&
+                                sudo docker build -t dl03/Finalproject:latest . &&
+                                sudo docker tag dl03/Finalproject:latest dl03/Finalproject:latest.$BUILD_ID &&
+                                echo "${Password}" | sudo docker login -u DL03 --password-stdin &&
+                                sudo docker push dl03/Finalproject:latest &&
+                                sudo docker push dl03/Finalproject:latest.$BUILD_ID
+                            '
+                        """
+                    }
                 }
             }
         }
     }
-
      post {
         success {
             emailext body: '''
