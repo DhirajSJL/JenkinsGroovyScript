@@ -44,9 +44,8 @@ pipeline {
             }
         }
     }
-}
 
-    post {
+     post {
         success {
             emailext body: '''
             <html>
