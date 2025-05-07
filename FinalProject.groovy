@@ -27,13 +27,12 @@ pipeline {
                     //sh 'scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@65.0.86.49:/home/ubuntu/Java_code'
 
                     // Execute docker-compose commands on the remote server
-                    // sh '''
-                    //     ssh -o StrictHostKeyChecking=no ubuntu@65.0.86.49 '
-                    //         cd /home/ubuntu/Java_code &&
-                    //         sudo docker compose down || true &&
-                    //         sudo docker compose up -d --build
-                    //     '
-                    // '''
+                     sh '''
+                         ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
+                             cd /home/ubuntu/Java_code &&
+                             sudo docker build -t dl03/ProjectImg:v1 .                           
+                         '
+                     '''
                 }
             }
         }
