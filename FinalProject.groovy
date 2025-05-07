@@ -22,8 +22,8 @@ pipeline {
             steps {
                 sshagent(['JenkinsDocker']) {
                     // Transfer files to remote server
-                    sh 'scp -o StrictHostKeyChecking=no target/*.jar ubuntu@65.0.86.49:/home/ubuntu/Java_code'
-                    sh 'scp -o StrictHostKeyChecking=no Dockerfile ubuntu@65.0.86.49:/home/ubuntu/Java_code'
+                    sh 'scp -o StrictHostKeyChecking=no target/*.jar ubuntu@65.1.135.172:/home/ubuntu/Java_code'
+                    sh 'scp -o StrictHostKeyChecking=no Dockerfile ubuntu@65.1.135.172:/home/ubuntu/Java_code'
                     //sh 'scp -o StrictHostKeyChecking=no docker-compose.yml ubuntu@65.0.86.49:/home/ubuntu/Java_code'
 
                     // Execute docker-compose commands on the remote server
