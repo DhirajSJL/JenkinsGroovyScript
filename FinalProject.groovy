@@ -28,11 +28,11 @@ pipeline {
 
                             ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
                                 cd /home/ubuntu/Java_code &&
-                                sudo docker build -t dl03/Finalproject:latest . &&
-                                sudo docker tag dl03/Finalproject:latest dl03/Finalproject:latest.$BUILD_ID &&
+                                sudo docker build -t dl03/finalproject:latest . &&
+                                sudo docker tag dl03/finalproject:latest dl03/finalproject:latest.$BUILD_ID &&
                                 echo "${Password}" | sudo docker login -u DL03 --password-stdin &&
-                                sudo docker push dl03/Finalproject:latest &&
-                                sudo docker push dl03/Finalproject:latest.$BUILD_ID
+                                sudo docker push dl03/finalproject:latest &&
+                                sudo docker push dl03/finalproject:latest.$BUILD_ID
                             '
                         """
                     }
