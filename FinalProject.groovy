@@ -27,7 +27,8 @@ pipeline {
                     sh '''
                         ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
                             cd /home/ubuntu/Java_code &&
-                            sudo docker build -t dl03/$JOB_NAME:latest .
+                            sudo docker build -t dl03/Finalproject:latest . &&
+                            sudo docker image tag dl03/Finalproject:latest dl03/Finalproject:latest.$BUILD_ID
                         '
                     '''
                 }
@@ -38,8 +39,8 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'DockerPass', variable: 'Password')]) {
                     sh 'docker login -u abdallahdoc -p ${Password}'
-                    sh 'docker image push dl03/$JOB_NAME:v1.$BUILD_ID'
-                    sh 'docker image push dl03/$JOB_NAME:latest'
+                    sh 'docker image push dl03/Finalproject:latest.$BUILD_ID'
+                    sh 'docker image push dl03/Finalproject:latest'
                 }
             }
         }
