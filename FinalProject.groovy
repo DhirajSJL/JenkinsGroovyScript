@@ -23,10 +23,10 @@ pipeline {
                 withCredentials([string(credentialsId: 'DockerPass', variable: 'Password')]) {
                     sshagent(['JenkinsDocker']) {
                         sh """
-                            scp -o StrictHostKeyChecking=no target/*.jar ubuntu@65.1.135.172:/home/ubuntu/Java_code
-                            scp -o StrictHostKeyChecking=no Dockerfile ubuntu@65.1.135.172:/home/ubuntu/Java_code
+                            scp -o StrictHostKeyChecking=no target/*.jar ubuntu@13.234.238.123:/home/ubuntu/Java_code
+                            scp -o StrictHostKeyChecking=no Dockerfile ubuntu@13.234.238.123:/home/ubuntu/Java_code
 
-                            ssh -o StrictHostKeyChecking=no ubuntu@65.1.135.172 '
+                            ssh -o StrictHostKeyChecking=no ubuntu@13.234.238.123 '
                                 cd /home/ubuntu/Java_code &&
                                 sudo docker build -t dl03/finalproject:latest . &&
                                 sudo docker tag dl03/finalproject:latest dl03/finalproject:v1.$BUILD_ID &&
