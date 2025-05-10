@@ -15,6 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 sh 'mvn clean package'
+                sh 'pwd'
             }
         }
 
@@ -43,11 +44,8 @@ pipeline {
         stage('Kubernetes Execution') {
             steps {
                 sshagent(['KubernetesServer']) {
-                    sh """
-                        ssh -o StrictHostKeyChecking=no ubuntu@15.206.167.100 '
-                            pwd
-                        '
-                    """
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@15.206.167.100 rm -r /home/ubuntu/templates'
+                    sh 'scp -ro StrictHostKeyChecking=no templates/ ubuntu@15.206.167.100:/home/ubuntu/'
                 }
             }
         }
