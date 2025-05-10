@@ -5,10 +5,10 @@ pipeline {
         maven 'Maven_3.9.8_for_Java'
     }
 
-    stages {
+        stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', url: 'https://github.com/DhirajSJL/Docker_Stuff.git'
+                git branch: 'main', url: 'https://github.com/DhirajSJL/DevopsFinalProject.git'
             }
         }
 
@@ -23,10 +23,10 @@ pipeline {
                 withCredentials([string(credentialsId: 'DockerPass', variable: 'Password')]) {
                     sshagent(['JenkinsDocker']) {
                         sh """
-                            scp -o StrictHostKeyChecking=no target/*.jar ubuntu@13.201.79.69:/home/ubuntu/Java_code
-                            scp -o StrictHostKeyChecking=no Dockerfile ubuntu@13.201.79.69:/home/ubuntu/Java_code
+                            scp -o StrictHostKeyChecking=no target/*.jar ubuntu@15.206.91.28:/home/ubuntu/Java_code
+                            scp -o StrictHostKeyChecking=no Dockerfile ubuntu@15.206.91.28:/home/ubuntu/Java_code
 
-                            ssh -o StrictHostKeyChecking=no ubuntu@13.201.79.69 '
+                            ssh -o StrictHostKeyChecking=no ubuntu@15.206.91.28 '
                                 cd /home/ubuntu/Java_code &&
                                 sudo docker build -t dl03/finalproject:latest . &&
                                 sudo docker tag dl03/finalproject:latest dl03/finalproject:v1.$BUILD_ID &&
@@ -36,6 +36,18 @@ pipeline {
                             '
                         """
                     }
+                }
+            }
+        }
+
+        stage('Kubernetes Execution') {
+            steps {
+                sshagent(['KubernetesServer']) {
+                    sh """
+                        ssh -o StrictHostKeyChecking=no ubuntu@15.206.167.100 '
+                            pwd
+                        '
+                    """
                 }
             }
         }
