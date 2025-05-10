@@ -46,6 +46,9 @@ pipeline {
                 sshagent(['KubernetesServer']) {
                     sh 'ssh -o StrictHostKeyChecking=no ubuntu@15.206.167.100 rm -r /home/ubuntu/templates'
                     sh 'scp -r -o StrictHostKeyChecking=no templates/ ubuntu@15.206.167.100:/home/ubuntu/'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@15.206.167.100 kubectl delete -f /home/ubuntu/templates/'
+                    sh 'sleep 5 && echo "Waiting for pods to terminate"'
+                    sh 'ssh -o StrictHostKeyChecking=no ubuntu@15.206.167.100 kubectl apply -f /home/ubuntu/templates/'
                 }
             }
         }
